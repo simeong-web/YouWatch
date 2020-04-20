@@ -1,0 +1,14 @@
+.up-next-container {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+
+    .up-text-toggle {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-right: 10px;
+        }
+    }
+}
