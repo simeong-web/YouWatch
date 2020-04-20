@@ -8,5 +8,5 @@ describe('Watch', () => {
             <Watch />
         );
         expect(wrapper).toMatchSnapshot();
-    })
-})
+    });
+});
