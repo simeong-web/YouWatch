@@ -3,8 +3,13 @@ import AppLayout from './components/AppLayout/AppLayout';
 import Home from './containers/Home/Home';
 import { Route, Switch } from 'react-router-dom';
 import Watch from './containers/Watch/Watch';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { youtubeLibraryLoaded } from './store/actions/api';
 
-export default class App extends Component {
+const API_KEY = 'AIzaSyAcLYkB3mK388cbgtZIRf9mtiKJCnAnCSQ';
+
+class App extends Component {
     render() {
         return (
             <AppLayout>
@@ -15,4 +20,30 @@ export default class App extends Component {
             </AppLayout>
         );
     }
+
+    componentDidMount() {
+        this.loadYoutubeApi();
+    }
+
+    loadYoutubeApi() {
+        const script = document.createElement("script");
+        script.src = "https://apis.google.com/js/client.js";
+
+        script.onload = () => {
+            window.gapi.load('client', () => {
+                window.gapi.client.setApiKey(API_KEY);
+                window.gapi.client.load('youtube', 'v3', () => {
+                    this.props.youtubeLibraryLoaded();
+                });
+            });
+        };
+
+        document.body.appendChild(script);
+    }
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ youtubeLibraryLoaded }, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(App);
