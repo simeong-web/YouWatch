@@ -6,8 +6,16 @@ import SideBar from '../SideBar/SideBar';
 import HomeContent from './HomeContent/HomeContent';
 import { getYoutubeLibraryLoaded } from '../../store/reducers/api';
 import { bindActionCreators } from 'redux';
+import { getVideoCategoryIds } from '../../store/reducers/video';
 
 class Home extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            categoryIndex: 0
+        };
+    }
+
     render() {
         return (
             <>
@@ -26,6 +34,8 @@ class Home extends Component {
     componentDidUpdate(prevProps) {
         if (this.props.youtubeLibraryLoaded !== prevProps.youtubeLibraryLoaded) {
             this.fetchCategoriesAndMostPopularVideos();
+        } else if (this.props.videoCategories !== prevProps.videoCategories) {
+            this.fetchVideosByCategory();
         }
     }
 
@@ -33,18 +43,31 @@ class Home extends Component {
         this.props.fetchMostPopularVideos();
         this.props.fetchVideoCategories();
     }
+
+    fetchVideosByCategory() {
+        const categoryStartIndex = this.state.categoryIndex;
+        const categories = this.props.videoCategories.slice(categoryStartIndex, categoryStartIndex + 3);
+        this.props.fetchMostPopularVideosByCategory(categories);
+        this.setState(prevState => {
+            return {
+                categoryIndex: prevState.categoryIndex + 3
+            };
+        });
+    }
 };
 
 function mapStateToProps(state) {
     return {
-        youtubeLibraryLoaded: getYoutubeLibraryLoaded(state)
+        youtubeLibraryLoaded: getYoutubeLibraryLoaded(state),
+        videoCategories: getVideoCategoryIds(state)
     };
 }
 
 function mapDispatchToProps(dispatch) {
     const fetchMostPopularVideos = videoActions.mostPopular.request;
     const fetchVideoCategories = videoActions.categories.request;
-    return bindActionCreators({ fetchMostPopularVideos, fetchVideoCategories }, dispatch);
+    const fetchMostPopularVideosByCategory = videoActions.mostPopularByCategory.request;
+    return bindActionCreators({ fetchMostPopularVideos, fetchVideoCategories, fetchMostPopularVideosByCategory }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

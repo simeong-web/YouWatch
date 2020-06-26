@@ -1,4 +1,4 @@
-import { MOST_POPULAR, VIDEO_CATEGORIES, MOST_POPULAR_BY_CATEGORY, categories } from '../actions/video';
+import { MOST_POPULAR, VIDEO_CATEGORIES, MOST_POPULAR_BY_CATEGORY } from '../actions/video';
 import { SUCCESS } from '../actions/index';
 import { createSelector } from 'reselect';
 
@@ -113,7 +113,7 @@ function groupVideosByIdAndCategory(response) {
 
         const items = byCategory.items;
         if (items && items) {
-            items.push(videos.id);
+            items.push(video.id);
         } else {
             byCategory.items = [video.id];
         }

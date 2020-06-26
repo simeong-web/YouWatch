@@ -62,10 +62,10 @@ function createResource(properties) {
 }
 
 export function buildMostPopularVideosRequest(amount = 12, loadDescription = false, nextPageToken, videoCategoryId = null) {
-    let fields = 'nextPageToken, prevPageToken, items(contentDetails/duration, id, snippet(channelId, channelTitle, localized/title, publishedAt, thumbnails/medium, title), statistics/viewCount), pageInfo(totalResults)';
+    let fields = 'nextPageToken, prevPageToken, items(contentDetails/duration, id, snippet(channelId, channelTitle, publishedAt, thumbnails/medium, title), statistics/viewCount), pageInfo(totalResults)';
 
     if (loadDescription) {
-        fields += ', items/snippet/description';
+        fields += ',items/snippet/description';
     }
 
     return buildApiRequest('GET', '/youtube/v3/videos', {

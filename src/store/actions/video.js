@@ -1,5 +1,4 @@
 import createAction, { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './index';
-import { create } from 'react-test-renderer';
 
 export const MOST_POPULAR = createRequestTypes('MOST_POPULAR');
 export const mostPopular = {
