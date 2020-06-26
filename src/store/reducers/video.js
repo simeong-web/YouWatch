@@ -15,7 +15,7 @@ export default function videos(state = initialState, action) {
         case VIDEO_CATEGORIES[SUCCESS]:
             return reduceFetchVideoCategories(action.response, state);
         case MOST_POPULAR_BY_CATEGORY[SUCCESS]:
-            return reduceFetchMostPopularVideosByCategory(action.response, state);
+            return reduceFetchMostPopularVideosByCategory(action.response, action.categories, state);
         default:
             return state;
     }
