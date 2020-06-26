@@ -148,4 +148,4 @@ export const videosByCategoryLoaded = createSelector(
     (videosByCategory) => {
         return Object.keys(videosByCategory || {}).length;
     }
-)
+);

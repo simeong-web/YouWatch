@@ -1,6 +1,7 @@
 import { fork, take, takeEvery, call, all, put } from 'redux-saga/effects';
 import * as api from '../api/youtube-api';
 import * as videoActions from '../actions/video';
+import * as watchActions from '../actions/watch';
 import { REQUEST } from '../actions';
 import { fetchEntity, ignoreErrors } from './index';
 
@@ -40,5 +41,18 @@ export function* fetchMostPopularVideosByCategory(categories) {
       yield put(videoActions.mostPopularByCategory.success(response, categories));
     } catch (error) {
       yield put(videoActions.mostPopularByCategory.failure(error));
+    }
+}
+
+export function* fetchWatchDetails(videoId) {
+    let requests = [
+        buildVideoDetailRequest.bind(null, videoId)
+    ];
+
+    try {
+        const responses = yield all(requests.map(fn => call(fun)));
+        yield put(watchActions.details.success(responses));
+    } catch (error) {
+        yield put(watchActions.details.failure(error));
     }
 }
