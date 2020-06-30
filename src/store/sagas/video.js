@@ -4,6 +4,7 @@ import * as videoActions from '../actions/video';
 import * as watchActions from '../actions/watch';
 import { REQUEST } from '../actions';
 import { fetchEntity, ignoreErrors } from './index';
+import {buildVideoDetailRequest} from '../api/youtube-api';
 
 export function* watchMostPopularVideos() {
     while (true) {
@@ -45,14 +46,14 @@ export function* fetchMostPopularVideosByCategory(categories) {
 }
 
 export function* fetchWatchDetails(videoId) {
-    let requests = [
-        buildVideoDetailRequest.bind(null, videoId)
-    ];
+  let requests = [
+    buildVideoDetailRequest.bind(null, videoId),
+  ];
 
-    try {
-        const responses = yield all(requests.map(fn => call(fun)));
-        yield put(watchActions.details.success(responses));
-    } catch (error) {
-        yield put(watchActions.details.failure(error));
-    }
+  try {
+    const responses = yield all(requests.map(fn => call(fn)));
+    yield put(watchActions.details.success(responses));
+  } catch (error) {
+    yield put(watchActions.details.failure(error));
+  }
 }
